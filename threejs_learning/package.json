@@ -16,6 +16,7 @@
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
+    "antd": "^4.9.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.0",
     "babel-loader": "8.1.0",
@@ -24,6 +25,7 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "cross-env": "^7.0.3",
     "css-loader": "4.3.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
@@ -92,7 +94,7 @@
   "scripts": {
     "flow": "flow",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "start": "node scripts/start.js",
+    "start": "cross-env PORT=8051 node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
