@@ -56,12 +56,12 @@ const useTypeScript = fs.existsSync(paths.appTsConfig);
 const swSrc = paths.swSrc;
 
 // style files regexes
-const cssRegex = /\.(css|less)$/;
-const cssModuleRegex = /\.module\.(css|less)$/;
+const cssRegex = /\.(css)$/;
+const cssModuleRegex = /\.module\.(css)$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
-// const lessRegex = /\.(less)$/;
-// const lessModuleRegex = /\.module\.(less)$/;
+const lessRegex = /\.(less)$/;
+const lessModuleRegex = /\.module\.(less)$/;
 
 const hasJsxRuntime = (() => {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === "true") {
@@ -468,15 +468,12 @@ module.exports = function (webpackEnv) {
             {
               test: cssRegex,
               exclude: cssModuleRegex,
-              use: getStyleLoaders(
-                {
-                  importLoaders: 2,
-                  sourceMap: isEnvProduction
-                    ? shouldUseSourceMap
-                    : isEnvDevelopment,
-                },
-                "less-loader"
-              ),
+              use: getStyleLoaders({
+                importLoaders: 1,
+                sourceMap: isEnvProduction
+                  ? shouldUseSourceMap
+                  : isEnvDevelopment,
+              }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
@@ -509,6 +506,7 @@ module.exports = function (webpackEnv) {
                   sourceMap: isEnvProduction
                     ? shouldUseSourceMap
                     : isEnvDevelopment,
+                  modules: true,
                 },
                 "sass-loader"
               ),
@@ -535,36 +533,37 @@ module.exports = function (webpackEnv) {
                 "sass-loader"
               ),
             },
-            // // less 设置
-            // {
-            //   test: lessRegex,
-            //   exclude: lessModuleRegex,
-            //   use: getStyleLoaders(
-            //     {
-            //       importLoaders: 3,
-            //       sourceMap: isEnvProduction
-            //         ? shouldUseSourceMap
-            //         : isEnvDevelopment,
-            //     },
-            //     "less-loader"
-            //   ),
-            //   sideEffects: true,
-            // },
-            // {
-            //   test: lessModuleRegex,
-            //   use: getStyleLoaders(
-            //     {
-            //       importLoaders: 3,
-            //       sourceMap: isEnvProduction
-            //         ? shouldUseSourceMap
-            //         : isEnvDevelopment,
-            //       modules: {
-            //         getLocalIdent: getCSSModuleLocalIdent,
-            //       },
-            //     },
-            //     "less-loader"
-            //   ),
-            // },
+            // less 设置
+            {
+              test: lessRegex,
+              exclude: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction
+                    ? shouldUseSourceMap
+                    : isEnvDevelopment,
+                  modules: true,
+                },
+                "less-loader"
+              ),
+              sideEffects: true,
+            },
+            {
+              test: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction
+                    ? shouldUseSourceMap
+                    : isEnvDevelopment,
+                  modules: {
+                    getLocalIdent: getCSSModuleLocalIdent,
+                  },
+                },
+                "less-loader"
+              ),
+            },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
             // In production, they would get copied to the `build` folder.
