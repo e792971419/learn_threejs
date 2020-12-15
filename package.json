@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@babel/plugin-syntax-jsx": "^7.12.1"
+  }
+}
